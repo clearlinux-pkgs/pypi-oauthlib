@@ -1,5 +1,5 @@
 PKG_NAME := pypi-oauthlib
-URL = https://files.pythonhosted.org/packages/6e/7e/a43cec8b2df28b6494a865324f0ac4be213cb2edcf1e2a717547a93279b0/oauthlib-3.2.0.tar.gz
+URL = https://files.pythonhosted.org/packages/fe/58/30a4d3302f9bbd602c43385e7270fc3a9e8a665d07aafd6a4d4baa844739/oauthlib-3.2.1.tar.gz
 ARCHIVES = 
 
 include ../common/Makefile.common
