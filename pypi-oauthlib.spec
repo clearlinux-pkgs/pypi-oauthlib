@@ -7,12 +7,13 @@
 #
 Name     : pypi-oauthlib
 Version  : 3.3.0
-Release  : 88
+Release  : 89
 URL      : https://files.pythonhosted.org/packages/98/8a/6ea75ff7acf89f43afb157604429af4661a9840b1f2cece602b6a13c1893/oauthlib-3.3.0.tar.gz
 Source0  : https://files.pythonhosted.org/packages/98/8a/6ea75ff7acf89f43afb157604429af4661a9840b1f2cece602b6a13c1893/oauthlib-3.3.0.tar.gz
 Summary  : A generic, spec-compliant, thorough implementation of the OAuth request-signing logic
 Group    : Development/Tools
 License  : BSD-3-Clause
+Requires: pypi-oauthlib-license = %{version}-%{release}
 Requires: pypi-oauthlib-python = %{version}-%{release}
 Requires: pypi-oauthlib-python3 = %{version}-%{release}
 BuildRequires : buildreq-distutils3
@@ -23,6 +24,14 @@ BuildRequires : buildreq-distutils3
 %description
 OAuthLib - Python Framework for OAuth1 & OAuth2
 ===============================================
+
+%package license
+Summary: license components for the pypi-oauthlib package.
+Group: Default
+
+%description license
+license components for the pypi-oauthlib package.
+
 
 %package python
 Summary: python components for the pypi-oauthlib package.
@@ -55,7 +64,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1750253797
+export SOURCE_DATE_EPOCH=1750258726
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -99,6 +108,8 @@ ASFLAGS="$CLEAR_INTERMEDIATE_ASFLAGS"
 LDFLAGS="$CLEAR_INTERMEDIATE_LDFLAGS"
 export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/pypi-oauthlib
+cp %{_builddir}/oauthlib-%{version}/LICENSE %{buildroot}/usr/share/package-licenses/pypi-oauthlib/bf3361097ad0ebcdc7d7e32cce4d4c44405cc940 || :
 python3 -tt setup.py build  install --root=%{buildroot}
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
@@ -111,10 +122,17 @@ FCFLAGS="$CLEAR_INTERMEDIATE_FCFLAGS -march=x86-64-v3 "
 LDFLAGS="$CLEAR_INTERMEDIATE_LDFLAGS -march=x86-64-v3 "
 python3 -tt setup.py build install --root=%{buildroot}-v3
 popd
+## Remove excluded files
+rm -f %{buildroot}*/usr/lib/python3.13/site-packages/examples/__pycache__/__init__.cpython-313.pyc
+rm -f %{buildroot}*/usr/lib/python3.13/site-packages/examples/__init__.py
 /usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/pypi-oauthlib/bf3361097ad0ebcdc7d7e32cce4d4c44405cc940
 
 %files python
 %defattr(-,root,root,-)
